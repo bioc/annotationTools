@@ -1,0 +1,14 @@
+citHeader("To cite AnnotationTools in publications, please use:")
+
+citEntry(entry="Article",
+    author ="Alexandre Kuhn et al",
+    title ="AnnotationTools",
+    journal =      "",
+    volume =       "",
+    year =         "", 
+    pages =        "",
+    url =          "",
+    textVersion = 
+    paste("Kuhn, A. AnnotationTools (manuscript in preparation)",
+         "")
+)

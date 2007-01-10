@@ -1,0 +1,180 @@
+% \VignetteIndexEntry{AnnotationTools Overview}
+% \VignetteKeywords{Expression Analysis, Annotation}
+% \VignettePackage{annotationTools}
+
+\documentclass[a4paper]{article}
+
+\newcommand{\Rfunction}[1]{{\texttt{#1}}}
+\newcommand{\Robject}[1]{{\texttt{#1}}}
+\newcommand{\Rpackage}[1]{{\textit{#1}}}
+
+\title{AnnotationTools}
+\author{Alexandre Kuhn}
+
+\usepackage{hyperref}
+\usepackage{Sweave}
+
+\begin{document}
+
+\maketitle
+
+\Rpackage{AnnotationTools} is a collection of functions for the annotation of DNA microarray experiments on the basis of plain text annotation and homology/orthology files. Any flat annotation file can be used once it is loaded into R. Some functions are tailored to be used with Affymetrix annotation (ie HG-U133\_Plus\_2\_annot.csv for array 'HG-U133 Plus 2.0' for instance, available from \url{http://www.affymetrix.com}). Other functions are intended to be used with arbitrary annotation or homology/orthology files.
+
+In this vignette, we provide a few practical examples on how to annotate microarray probes and how to retrieve orthologous genes and probe sets (ie, how to match Affymetrix probe sets accross different species), using various source of orthology information (namely HomoloGene, see \url{http://www.ncbi.nlm.nih.gov/HomoloGene} and Affymetrix homology/orthology files)
+
+
+\section{Annotation}
+Assume that you want to annotate probe sets on Affymetrix array 'HG-U133 Plus 2.0'. The corresponding annotation file (HG-U133\_Plus\_2\_annot.csv) can be loaded into R with
+
+<<eval=FALSE>>=
+annotation_HGU133Plus2<-read.csv('HG-U133_Plus_2_annot.csv',colClasses='character')
+@
+
+For demonstration purpose, a partial Affymetrix annotation file is provided with this package. We can load it with the following commands
+
+<<>>=
+annotationFile<-'HG-U133_Plus_2_annot_part.csv'
+dataDirectory<-system.file('data',package='annotationTools')
+annotation_HGU133Plus2<-read.csv(paste(dataDirectory,annotationFile,sep='/'),colClasses='character')
+@
+
+The variable \Robject{myPS} contains two probe set IDs of interest
+
+<<>>=
+myPS<-c('117_at','1007_s_at')
+@
+
+As an example, the gene symbols associated with these two probe sets can be retrieved from the annotation with the function \Rfunction{getGENESYMBOL}
+
+<<echo=FALSE>>=
+library(annotationTools)
+@
+
+<<>>=
+getGENESYMBOL(myPS,annotation_HGU133Plus2)
+@
+
+Further, you can for instance retrieve Gene Ontology (GO, \url{http://www.geneontology.org}) information, which is provided in the Affymetrix annotation file, with the function \Rfunction{getGENEONTOLOGY}
+
+<<>>=
+getGENEONTOLOGY(myPS,annotation_HGU133Plus2)
+@
+
+(By default \Rfunction{getGENEONTOLOGY} retrieves the 'biological process'--related GO annotation). To retrieve GO terms only and omit the rest (ie, GO IDs and information on the GO annotation source), you can set the option \texttt{specifics} to 2
+
+<<>>=
+getGENEONTOLOGY(myPS,annotation_HGU133Plus2,specifics=2)
+@
+
+Correspondingly, setting \texttt{specifics} to 1 (or 3) would result in retrieving GO IDs (respectively GO annotation source) only.
+
+The list of all functions available through \Rpackage{AnnotationTools} can be obtained with
+
+<<>>=
+ls(grep('annotationTools',search()))
+@
+
+\Rfunction{getANNOTATION} and \Rfunction{getMULTIANNOTATION} are general functions that work similarly to the specific annotation functions (eg, \Rfunction{getGENESYMBOL}) but that accept arbitrary annotation files. Note that these two functions can also be used to retrieve any information in Affymetrix annotation files that is not handled by a specific function in \Rpackage{AnnotationTools}. Here is the information currently provided by Affymetrix in their annotation files
+
+<<>>=
+colnames(annotation_HGU133Plus2)
+@
+
+
+Note finally that if an annotation function does not return anything for one of the probe set IDs in input, it can be useful to trace back the reason for the failure by setting \texttt{diagnose=TRUE}. Additional output will then allow you to determine if the probe set ID was not found in the annotation file , if it was present in the annotation file but did not have any annotation associated with it, or if the probe set ID was simply absent from the input (ie, empty character string or NA). Please refer to the help (type \texttt{?getGENESYMBOL} at the R prompt for instance) for detailed explanations on the output diagnosis option.
+
+
+\section{Find orthologs}
+We will now show how to use HomoloGene to retrieve orthologs. The complete flat file version of HomoloGene can be downloaded from \url{http://www.ncbi.nlm.nih.gov/HomoloGene}. A partial version of the database is provided with this package as an example.
+
+<<>>=
+homologeneFile<-'homologene_part.data'
+homologene<-read.delim(paste(dataDirectory,homologeneFile,sep='/'),header=FALSE)
+@
+
+Given two human genes of interest (gene IDs 5982 and 93587 for instance), their mouse orthologs can be looked up in the previously loaded homology file with \Rfunction{getHOMOLOG}, specifying the appropriate species ID for \textit{Mus musculus} (ie 10090, see \url{http://www.ncbi.nlm.nih.gov/Taxonomy})
+
+<<>>=
+myGenes<-c(5982,93587)
+getHOMOLOG(myGenes,10090,homologene)
+@
+
+Furthermore, we can easily find orthologous probe sets on two different Affymetrix arrays by combining several functions in \Rpackage{AnnotationTools}. Assume that we are interested in probe set ID '1053\_at' (on human array 'HG-U133 Plus 2.0') and we would like to find orthologous probe sets on mouse array 'Mouse430 2.0' (ie, probe sets associated with the mouse ortholog of the human gene probed by '1053\_at'): We first look up the human gene ID associated with probe set '1053\_at', then find the mouse orthologous gene ID, and finally retrieve the corresponding probe set IDs on the mouse array (using Affymetrix annotation file for array 'Mouse430 2.0')
+
+<<>>=
+ps_human<-'1053_at'
+geneID_human<-getGENEID(ps_human,annotation_HGU133Plus2)
+geneID_mouse<-getHOMOLOG(geneID_human,10090,homologene)
+annotationFile<-'Mouse430_2_annot_part.csv'
+annotation_Mouse4302<-read.csv(paste(dataDirectory,annotationFile,sep='/'),colClasses='character')
+geneID_mouse<-unlist(geneID_mouse)
+ps_mouse<-getPROBESET(geneID_mouse,annotation_Mouse4302)
+ps_mouse
+@
+
+Note that \Rfunction{getHOMOLOG} can be tuned to other homology/orthology (flat file) databases. It can also be used to query with cluster IDs instead of gene IDs (setting the option \texttt{cluster=TRUE}).
+
+For each array format, Affymetrix provides a table listing homologous/orthologous probe sets on their other arrays (ie HG-U133\_Plus\_2\_ortholog.csv for array 'HG-U133 Plus 2.0' for instance, available from \url{http://www.affymetrix.com}). The \texttt{cluster=TRUE} option can in particular be used to mine these tables for orthologous probe sets on a particular array. We provide a partial Affymetrix homology/orthology file for array 'HG-U133 Plus 2.0' as an example
+
+<<>>=
+affyOrthologFile<-'HG-U133_Plus_2_ortholog_part.csv'
+orthologs_HGU133Plus2<-read.csv(paste(dataDirectory,affyOrthologFile,sep='/'),colClasses='character')
+@
+
+Given the human probe set '1053\_at' (on array 'HG-U133 Plus 2.0'), we can for instance retrieve the orthologous probe sets proposed by Affymetrix for array 'Mouse 430 2.0' by specifying
+
+<<>>=
+getHOMOLOG('1053_at','Mouse430_2',orthologs_HGU133Plus2,cluster=TRUE,clusterCol=1,speciesCol=4,idCol=3)
+@
+
+Note that in this example, the retrieved probe sets match those previously found using HomoloGene.
+
+
+\section{Build tables of orthologous probe sets}
+
+Here, we provide example code to map all probe sets on Affymetrix array 'HG-U133 Plus 2.0' to their orthologous probe sets on array 'Mouse430 2.0'. We use HomoloGene to find the mouse orthologs of the human genes. If a human probe set is annotated with several gene IDs, we retrieve the mouse orthologs corresponding to all of these genes. We therefore use the function \Rfunction{compactList} to obtain final lists of orthologous genes and orthologous probe sets of the same length as the original vector of human probe sets
+
+<<eval=FALSE>>=
+annotation_HGU133Plus2<-read.csv('HG-U133_Plus_2_annot.csv',colClasses='character')
+annotation_Mouse4302<-read.csv('Mouse430_2_annot.csv',colClasses='character')
+homologene<-read.delim('homologene.data',header=F)
+target_species<-10090
+
+ps_HGU133Plus2<-annotation_HGU133Plus2[1:1000,1]
+gid_HGU133Plus2<-getGENEID(ps_HGU133Plus2,annotation_HGU133Plus2)
+length_gid_HGU133Plus2<-sapply(gid_HGU133Plus2,function(x) {length(x)})
+gid_Mouse4302<-getHOMOLOG(unlist(gid_HGU133Plus2),target_species,homologene)
+length_gid_Mouse4302<-sapply(gid_Mouse4302,function(x) {length(x)})
+ps_Mouse4302<-getPROBESET(unlist(gid_Mouse4302),annotation_Mouse4302)
+
+ps_Mouse4302_1<-compactList(ps_Mouse4302,length_gid_Mouse4302)
+ps_Mouse4302_2<-compactList(ps_Mouse4302_1,length_gid_HGU133Plus2)
+gid_Mouse4302_1<-compactList(gid_Mouse4302,length_gid_HGU133Plus2)
+@
+
+After removing duplicate (and absent) orthologous gene IDs and probe sets, we can write a table listing orthologous probe sets between arrays 'HG-U133 Plus 2.0' and 'Mouse 430 2.0'
+
+<<eval=FALSE>>=
+ps_Mouse4302_2<-lapply(ps_Mouse4302_2,function(x) {unique(x)})
+ps_Mouse4302_2<-lapply(ps_Mouse4302_2,function(x) {if (length(x)>1) na.omit(x) else x})
+gid_Mouse4302_1<-lapply(gid_Mouse4302_1,function(x) {unique(x)})
+gid_Mouse4302_1<-lapply(gid_Mouse4302_1,function(x) {if (length(x)>1) na.omit(x) else x})
+
+ps2ps<-cbind(ps_HGU133Plus2,listToCharacterVector(gid_HGU133Plus2,sep=','),listToCharacterVector(gid_Mouse4302_1,sep=','),listToCharacterVector(ps_Mouse4302_2,sep=','))
+colnames(ps2ps)<-c('ps_HGU133Plus2','gid_HGU133Plus2','gid_Mouse4302','ps_Mouse4302')
+write.table(ps2ps,file='HGU133Plus2_Mouse4302.txt',sep='\t',col.names=T,row.names=F)
+@
+
+
+\section{Session Information}
+
+The version number of R and packages loaded for generating the vignette were:
+
+<<echo=FALSE>>=
+sessionInfo()
+@
+
+
+
+
+\end{document}
