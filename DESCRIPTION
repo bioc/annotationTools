@@ -1,10 +1,10 @@
 Package: annotationTools
 Type: Package
-Title: Annotate Microarrays Using Annotation Text Files    
+Title: Annotate microarrays and find orthologs using flat file databases    
 biocViews: Microarray, Annotation
 Version: 1.2.1
 Date: 2006-12-18
 Author: Alexandre Kuhn <alexandre.kuhn@isb-sib.ch>
 Maintainer: Alexandre Kuhn <alexandre.kuhn@isb-sib.ch>
-Description: Functions to annotate microarray experiments using flat annotation files.
+Description: Functions to annotate microarrays and mine for orthologs from flat file databases (plain text files).
 License: GPL
