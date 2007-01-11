@@ -2,7 +2,7 @@ Package: annotationTools
 Type: Package
 Title: Annotate Microarrays Using Annotation Text Files    
 biocViews: Microarray, Annotation
-Version: 1.2.0
+Version: 1.2.1
 Date: 2006-12-18
 Author: Alexandre Kuhn <alexandre.kuhn@isb-sib.ch>
 Maintainer: Alexandre Kuhn <alexandre.kuhn@isb-sib.ch>
