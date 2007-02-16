@@ -1,4 +1,4 @@
-% \VignetteIndexEntry{AnnotationTools Overview}
+% \VignetteIndexEntry{annotationTools Overview}
 % \VignetteKeywords{Expression Analysis, Annotation}
 % \VignettePackage{annotationTools}
 
@@ -8,22 +8,24 @@
 \newcommand{\Robject}[1]{{\texttt{#1}}}
 \newcommand{\Rpackage}[1]{{\textit{#1}}}
 
-\title{AnnotationTools}
+\title{annotationTools}
 \author{Alexandre Kuhn}
 
 \usepackage{hyperref}
 \usepackage{Sweave}
+\usepackage{natbib}
 
 \begin{document}
 
 \maketitle
 
-\Rpackage{AnnotationTools} is a collection of functions for the annotation of DNA microarray experiments on the basis of plain text annotation and homology/orthology files. Any flat annotation file can be used once it is loaded into R. Some functions are tailored to be used with Affymetrix annotation (ie HG-U133\_Plus\_2\_annot.csv for array 'HG-U133 Plus 2.0' for instance, available from \url{http://www.affymetrix.com}). Other functions are intended to be used with arbitrary annotation or homology/orthology files.
+\Rpackage{annotationTools} is a collection of functions for the annotation of DNA microarray experiments on the basis of plain text annotation and homology/orthology files. Any flat annotation file can be used once it is loaded into R. Some functions are tailored to be used with Affymetrix annotations (ie HG-U133\_Plus\_2\_annot.csv for array 'HG-U133 Plus 2.0' for instance, available from \url{http://www.affymetrix.com}). Other functions are intended to be used with arbitrary annotation or homology/orthology files.
 
-In this vignette, we provide a few practical examples on how to annotate microarray probes and how to retrieve orthologous genes and probe sets (ie, how to match Affymetrix probe sets accross different species), using various source of orthology information (namely HomoloGene, see \url{http://www.ncbi.nlm.nih.gov/HomoloGene} and Affymetrix homology/orthology files)
+In this vignette, we provide a few practical examples on how to annotate microarray probes (Section~\ref{annotation}) and how to retrieve orthologous genes and probe sets (in particular, how to match Affymetrix probe sets accross different species) using various source of orthology information (namely HomoloGene, see \url{http://www.ncbi.nlm.nih.gov/HomoloGene} and Affymetrix homology/orthology files) (Section~\ref{orthologs}).
+We also show how to build a mapping table of all the probe sets on a given microarray format and their orthologs on another format (Section~\ref{orthotables}) and how to use such a table to perform cross-species analysis of gene expression regulation (Section~\ref{example}).
 
 
-\section{Annotation}
+\section{Annotation}\label{annotation}
 Assume that you want to annotate probe sets on Affymetrix array 'HG-U133 Plus 2.0'. The corresponding annotation file (HG-U133\_Plus\_2\_annot.csv) can be loaded into R with
 
 <<eval=FALSE>>=
@@ -54,13 +56,15 @@ library(annotationTools)
 getGENESYMBOL(myPS,annotation_HGU133Plus2)
 @
 
+Note that the output of \Rfunction{getGENESYMBOL} is a list. It contains two elements, one for each of the two elements in the input vector \Robject{myPS}. Note also that two gene symbols were found to be associated with the first probe set '117\_at' and that the first element in the output list thus is a vector of length 2 (containing gene symbols 'HSPA6' and 'LOC652878').
+
 Further, you can for instance retrieve Gene Ontology (GO, \url{http://www.geneontology.org}) information, which is provided in the Affymetrix annotation file, with the function \Rfunction{getGENEONTOLOGY}
 
 <<>>=
 getGENEONTOLOGY(myPS,annotation_HGU133Plus2)
 @
 
-(By default \Rfunction{getGENEONTOLOGY} retrieves the 'biological process'--related GO annotation). To retrieve GO terms only and omit the rest (ie, GO IDs and information on the GO annotation source), you can set the option \texttt{specifics} to 2
+Again, the output list has two elements, one for each input probe set. Three and four gene ontology terms were found to be associated with the first and the second probe set respectively. Note that by default, \Rfunction{getGENEONTOLOGY} retrieves the 'biological process'--related GO annotation. To retrieve GO terms only and omit the rest (ie, GO IDs and information on the GO annotation source), you can set the option \texttt{specifics} to 2
 
 <<>>=
 getGENEONTOLOGY(myPS,annotation_HGU133Plus2,specifics=2)
@@ -68,13 +72,13 @@ getGENEONTOLOGY(myPS,annotation_HGU133Plus2,specifics=2)
 
 Correspondingly, setting \texttt{specifics} to 1 (or 3) would result in retrieving GO IDs (respectively GO annotation source) only.
 
-The list of all functions available through \Rpackage{AnnotationTools} can be obtained with
+The list of all functions available through \Rpackage{annotationTools} can be obtained with
 
 <<>>=
 ls(grep('annotationTools',search()))
 @
 
-\Rfunction{getANNOTATION} and \Rfunction{getMULTIANNOTATION} are general functions that work similarly to the specific annotation functions (eg, \Rfunction{getGENESYMBOL}) but that accept arbitrary annotation files. Note that these two functions can also be used to retrieve any information in Affymetrix annotation files that is not handled by a specific function in \Rpackage{AnnotationTools}. Here is the information currently provided by Affymetrix in their annotation files
+\Rfunction{getANNOTATION} and \Rfunction{getMULTIANNOTATION} are general functions that work similarly to the specific annotation functions (eg, \Rfunction{getGENESYMBOL}) but that accept arbitrary annotation files. Note that these two functions can also be used to retrieve any information in Affymetrix annotation files that is not handled by a specific function in \Rpackage{annotationTools}. Here is the information currently provided by Affymetrix in their annotation files
 
 <<>>=
 colnames(annotation_HGU133Plus2)
@@ -84,7 +88,7 @@ colnames(annotation_HGU133Plus2)
 Note finally that if an annotation function does not return anything for one of the probe set IDs in input, it can be useful to trace back the reason for the failure by setting \texttt{diagnose=TRUE}. Additional output will then allow you to determine if the probe set ID was not found in the annotation file , if it was present in the annotation file but did not have any annotation associated with it, or if the probe set ID was simply absent from the input (ie, empty character string or NA). Please refer to the help (type \texttt{?getGENESYMBOL} at the R prompt for instance) for detailed explanations on the output diagnosis option.
 
 
-\section{Find orthologs}
+\section{Find orthologs}\label{orthologs}
 We will now show how to use HomoloGene to retrieve orthologs. The complete flat file version of HomoloGene can be downloaded from \url{http://www.ncbi.nlm.nih.gov/HomoloGene}. A partial version of the database is provided with this package as an example.
 
 <<>>=
@@ -99,7 +103,9 @@ myGenes<-c(5982,93587)
 getHOMOLOG(myGenes,10090,homologene)
 @
 
-Furthermore, we can easily find orthologous probe sets on two different Affymetrix arrays by combining several functions in \Rpackage{AnnotationTools}. Assume that we are interested in probe set ID '1053\_at' (on human array 'HG-U133 Plus 2.0') and we would like to find orthologous probe sets on mouse array 'Mouse430 2.0' (ie, probe sets associated with the mouse ortholog of the human gene probed by '1053\_at'): We first look up the human gene ID associated with probe set '1053\_at', then find the mouse orthologous gene ID, and finally retrieve the corresponding probe set IDs on the mouse array (using Affymetrix annotation file for array 'Mouse430 2.0')
+As already explained in Section~\ref{annotation}, all functions in \Rpackage{annotationTools} output a list. Each element in the output list corresponds to an element in the input vector.
+
+We can easily find orthologous probe sets on two different Affymetrix arrays by combining several functions in \Rpackage{annotationTools}. Assume that we are interested in probe set ID '1053\_at' (on human array 'HG-U133 Plus 2.0') and we would like to find orthologous probe sets on mouse array 'Mouse430 2.0' (ie, probe sets associated with the mouse ortholog of the human gene probed by '1053\_at'): We first look up the human gene ID associated with probe set '1053\_at', then find the mouse orthologous gene ID, and finally retrieve the corresponding probe set IDs on the mouse array (using Affymetrix annotation file for array 'Mouse430 2.0')
 
 <<>>=
 ps_human<-'1053_at'
@@ -112,7 +118,7 @@ ps_mouse<-getPROBESET(geneID_mouse,annotation_Mouse4302)
 ps_mouse
 @
 
-Note that \Rfunction{getHOMOLOG} can be tuned to other homology/orthology (flat file) databases. It can also be used to query with cluster IDs instead of gene IDs (setting the option \texttt{cluster=TRUE}).
+Note that \Rfunction{getHOMOLOG} can be tuned to other homology/orthology (flat file) databases. It can also be used to query with cluster IDs instead of gene IDs (setting the option \texttt{cluster=TRUE}). A cluster ID identifies a cluster of homologous/orthologous genes with a common identifier. Querying with a given cluster ID would result in retrieving all genes belonging to this cluster.
 
 For each array format, Affymetrix provides a table listing homologous/orthologous probe sets on their other arrays (ie HG-U133\_Plus\_2\_ortholog.csv for array 'HG-U133 Plus 2.0' for instance, available from \url{http://www.affymetrix.com}). The \texttt{cluster=TRUE} option can in particular be used to mine these tables for orthologous probe sets on a particular array. We provide a partial Affymetrix homology/orthology file for array 'HG-U133 Plus 2.0' as an example
 
@@ -127,12 +133,12 @@ Given the human probe set '1053\_at' (on array 'HG-U133 Plus 2.0'), we can for i
 getHOMOLOG('1053_at','Mouse430_2',orthologs_HGU133Plus2,cluster=TRUE,clusterCol=1,speciesCol=4,idCol=3)
 @
 
-Note that in this example, the retrieved probe sets match those previously found using HomoloGene.
+Note that in this example, the retrieved probe sets exactly match those previously found using HomoloGene.
 
 
-\section{Build tables of orthologous probe sets}
+\section{Build tables of orthologous probe sets}\label{orthotables}
 
-Here, we provide example code to map all probe sets on Affymetrix array 'HG-U133 Plus 2.0' to their orthologous probe sets on array 'Mouse430 2.0'. We use HomoloGene to find the mouse orthologs of the human genes. If a human probe set is annotated with several gene IDs, we retrieve the mouse orthologs corresponding to all of these genes. We therefore use the function \Rfunction{compactList} to obtain final lists of orthologous genes and orthologous probe sets of the same length as the original vector of human probe sets
+Here, we provide example code to map all probe sets on Affymetrix array 'HG-U133 Plus 2.0' to their orthologous probe sets on array 'Mouse430 2.0'. We use HomoloGene to find the mouse orthologs of the human genes. If a human probe set is annotated with several gene IDs, we retrieve the mouse orthologs corresponding to all of these genes. We therefore use the function \Rfunction{compactList} to obtain final lists of orthologous genes and orthologous probe sets of the same length as the original vector of human probe sets. Note that we assume in this example that the full annotation for'HG-U133 Plus 2.0' has been downloaded from Affymetrix and has been saved in the file 'HG-U133\_Plus\_2\_annot.csv'.
 
 <<eval=FALSE>>=
 annotation_HGU133Plus2<-read.csv('HG-U133_Plus_2_annot.csv',colClasses='character')
@@ -140,7 +146,7 @@ annotation_Mouse4302<-read.csv('Mouse430_2_annot.csv',colClasses='character')
 homologene<-read.delim('homologene.data',header=F)
 target_species<-10090
 
-ps_HGU133Plus2<-annotation_HGU133Plus2[1:1000,1]
+ps_HGU133Plus2<-annotation_HGU133Plus2[,1]
 gid_HGU133Plus2<-getGENEID(ps_HGU133Plus2,annotation_HGU133Plus2)
 length_gid_HGU133Plus2<-sapply(gid_HGU133Plus2,function(x) {length(x)})
 gid_Mouse4302<-getHOMOLOG(unlist(gid_HGU133Plus2),target_species,homologene)
@@ -152,19 +158,112 @@ ps_Mouse4302_2<-compactList(ps_Mouse4302_1,length_gid_HGU133Plus2)
 gid_Mouse4302_1<-compactList(gid_Mouse4302,length_gid_HGU133Plus2)
 @
 
-After removing duplicate (and absent) orthologous gene IDs and probe sets, we can write a table listing orthologous probe sets between arrays 'HG-U133 Plus 2.0' and 'Mouse 430 2.0'
+We now remove duplicate (and absent) orthologous gene IDs and probe sets.
 
 <<eval=FALSE>>=
 ps_Mouse4302_2<-lapply(ps_Mouse4302_2,function(x) {unique(x)})
 ps_Mouse4302_2<-lapply(ps_Mouse4302_2,function(x) {if (length(x)>1) na.omit(x) else x})
 gid_Mouse4302_1<-lapply(gid_Mouse4302_1,function(x) {unique(x)})
 gid_Mouse4302_1<-lapply(gid_Mouse4302_1,function(x) {if (length(x)>1) na.omit(x) else x})
-
-ps2ps<-cbind(ps_HGU133Plus2,listToCharacterVector(gid_HGU133Plus2,sep=','),listToCharacterVector(gid_Mouse4302_1,sep=','),listToCharacterVector(ps_Mouse4302_2,sep=','))
-colnames(ps2ps)<-c('ps_HGU133Plus2','gid_HGU133Plus2','gid_Mouse4302','ps_Mouse4302')
-write.table(ps2ps,file='HGU133Plus2_Mouse4302.txt',sep='\t',col.names=T,row.names=F)
 @
 
+Finally, we can write a table listing orthologous probe sets between arrays 'HG-U133 Plus 2.0' and 'Mouse 430 2.0'.
+
+<<eval=FALSE>>=
+orthoTable<-cbind(ps_HGU133Plus2,listToCharacterVector(gid_HGU133Plus2,sep=','),listToCharacterVector(gid_Mouse4302_1,sep=','),listToCharacterVector(ps_Mouse4302_2,sep=','))
+colnames(orthoTable)<-c('ps_HGU133Plus2','gid_HGU133Plus2','gid_Mouse4302','ps_Mouse4302')
+write.table(orthoTable,file='HGU133Plus2_Mouse4302.txt',sep='\t',col.names=T,row.names=F)
+@
+
+The function \Rfunction{ps2ps} uses the above procedure and allows to easily map orthologous probe sets between any pair of Affymetrix microarrays. The code above can thus be replaced by the following call
+
+<<eval=FALSE>>=
+orthoTable<-ps2ps(annotation_HGU133Plus2,annotation_Mouse4302,homologene,10090)
+write.table(orthoTable,file='HGU133Plus2_Mouse4302.txt',sep='\t',col.names=T,row.names=F)
+@
+
+
+\section{An example: Cross-species analysis of transcriptional dysregulation in Huntington's disease}\label{example}
+Huntington's disease is a neurological disorder caused by a trinucleotide (CAG) expansion in the \textit{HD} gene. One way of generating mouse models of HD is to expand the short CAG repeat of the mouse Huntington's disease gene homolog (\textit{Hdh}) with CAG repeats within the length range found in HD patients.
+
+Animal models of HD have allowed to show that mutant protein expression results in transcriptional dysregulation of many genes \citep{RuthLuthi-Carter05222000}. More recently, many mRNA changes have been detected in the brain of HD patients too \citep{AngelaHodges03152006}. How do these changes compare with those identified in mouse models? 
+
+Here we will consider the CHL2 mouse model of HD \citep{Chin-HsingLin01012001} and investigate if top mRNA changes detected in striatal samples of these mutant mice parallel those measured in the corresponding brain region of HD patients. Thereby, we aim at assessing the faithfulness of the animal model with regard to transcriptional dysregulations. To perform this comparison, we need to find orthologous probe sets in the two microarray formats used in the aforementioned studies, namely MG-U74Av2 for the mouse and HG-U133A for humans. The corresponding table of orthologous probe sets (which thus maps probe sets from MG-U74Av2 to HG-U133A) has been generated using \Rfunction{ps2ps} (see Section~\ref{orthotables}) and we will now show how to use it to try to answer our question.
+
+Tables of differentially expressed genes in the CHL2 mouse model and in HD patients are available from the repository HDBase (\url{http://hdbase.org/cgi-bin/welcome.cgi}). Partial versions of these lists and of the ortholog mapping table, as well as a partial annotation for microarray HG-U133A are provided with this package as a dataset called \Robject{orthologs\_example} (which contains \Robject{table\_mouse}, \Robject{table\_human}, \Robject{ortho} and \Robject{annot\_HGU133A}). In a real application, they would need to be loaded individually by the analyst into R and made available as data.frame objects.
+
+<<>>=
+data(orthologs_example)
+@
+
+We start by selecting the top 8 mouse probe sets from the (ordered) list of differentially expressed genes in CHL2 (\Robject{table\_mouse})
+
+<<>>=
+selection<-1:8
+ps_mouse<-table_mouse$Probe.Set.ID[selection]
+table_mouse[selection,]
+@
+
+We use the (previously generated) mapping table (stored in the variable \Robject{ortho}) to look up their orthologous probe sets
+
+<<>>=
+ps_human<-ortho[match(ps_mouse,ortho[,1]),4]
+ps_human
+@
+
+Each mouse probe set can have between zero and many orthologous probe sets on the HG-U133A array (the top mouse probe set has none for instance). Let us split expressions containing multiple orthologous probe sets and retrieve their corresponding gene symbols
+
+<<>>=
+ps_human<-lapply(ps_human,function(x){strsplit(x,',')[[1]]})
+length_ps_human<-sapply(ps_human,length)
+gs_human<-lapply(ps_human,function(x){listToCharacterVector(getGENESYMBOL(x,annot_HGU133A))})
+gs_human
+@
+
+This suggests that we indeed identified orthologous probe sets correctly (compare with gene symbols of top mouse probe sets). Note that multiple orthologous human probe sets corresponding to a given mouse probe set all report expression of the same gene (which does not need to be always the case, a given mouse gene could be matched to several different orthologs in human). We can identify selected MG-U71Av2 probe sets with no orthologous probe sets on HG-U133A (which will be useful in the remaining) 
+
+<<>>=
+existing_ps_human<-!is.na(ps_human)
+@
+
+Finally, we can look up gene expression regulations (log fold changes) measured by the top mouse probe sets with at least one orthologous human probe set
+
+<<>>=
+LFC_mouse<-table_mouse$M[rep(match(ps_mouse[existing_ps_human],table_mouse$Probe.Set.ID),length_ps_human[existing_ps_human])]
+@
+
+and the regulations measured by their orthologous probe sets in humans (using the list of differentially expressed genes in HD patients, stored in \Robject{table\_human})
+
+<<>>=
+LFC_human<-table_human$log2FC.HD.caudate.grade.0.2.vs.controls[match(unlist(ps_human[existing_ps_human]),table_human$Probe.Set.ID)]
+@
+
+The selected mouse mRNA changes and the orthologous human mRNA changes can now be displayed as a scatterplot using the following code (see Figure \ref{scatterplot})
+
+<<eval=false>>=
+plot(LFC_mouse,LFC_human,col=rep(1:length(ps_human[existing_ps_human]),length_ps_human[existing_ps_human]),pch=16,cex=1.5,xlab='log fold change in mouse',ylab='log fold change in human')
+abline(h=0)
+abline(v=0)
+abline(0,1)
+legend(x=0.25,y=-0.77,legend=lapply(gs_human[existing_ps_human],function(x){paste(unique(x),sep=',')}),text.col=1:length(ps_human[existing_ps_human]))
+@
+
+\begin{figure}[h]
+\centering
+<<fig=true, echo=false>>=
+plot(LFC_mouse,LFC_human,col=rep(1:length(ps_human[existing_ps_human]),length_ps_human[existing_ps_human]),pch=16,cex=1.5,xlab='log fold change in mouse',ylab='log fold change in human')
+abline(h=0)
+abline(v=0)
+abline(0,1)
+legend(x=0.25,y=-0.77,legend=lapply(gs_human[existing_ps_human],function(x){paste(unique(x),collapse=',')}),text.col=1:length(ps_human[existing_ps_human]))
+@
+\caption{Gene expression regulation measured by the top 8 mouse probe sets in the CHL2 mouse model of Huntington's disease and their orthologous regulations in human patients. Seven mouse probe sets out of eight could be matched to one or more orthologous probe sets on the human array. Multiple orthologous human probe sets (ie corresponding to a given mouse probe set) are identified by the same color. Their corresponding human gene symobls are indicated in the legend.}
+\label{scatterplot}
+\end{figure}
+
+Note that we used a single color to identify multiple human orthologous probe sets corresponding to a given mouse probe set. We observe that human probe sets with identical annotation sometimes report regulations very consistently (e.g. the 3 probe sets for \textit{RGS14}) but not always (e.g. the 5 probe sets for \textit{SNCA}). An extreme case of inconsistency is provided by \textit{MYT1L}, with a probe set measuring a log fold change of -1.5 and the other 0. Such a case might require checking both probe set sequences against their targeted transcript in order to make a decision on which probe set to take into account. Finally, we see that while some orthologs seem to be regulated in the same manner in HD patients compared to the CHL2 mouse model (eg \textit{PRKCB1} and \textit{RGS14}), some others show opposite direction regulation or absence of regulation in HD patients compared to the mouse model (\textit{SOX11}).
+
+In conclusion, such a systematic comparison might improve our understanding of the pathogenic molecular mechanisms leading to disease in animal models and in humans. It might also be useful to assess how different animal models recapitulate transcriptional dysregulations detected in humans for instance. Finally, cross-species analysis of transcription profiles might allow to pinpoint interesting, conserved set of genes of particular relevance in a given pathology.
 
 \section{Session Information}
 
@@ -175,6 +274,9 @@ sessionInfo()
 @
 
 
+
+\bibliographystyle{plainnat}
+\bibliography{annotationTools}
 
 
 \end{document}
