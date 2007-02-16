@@ -6,25 +6,27 @@ getMULTIANNOTATION<-function(identifier,annot,diagnose=FALSE,identifierCol=19,an
 	empty<-(is.na(identifier) | identifier=='')
 	if (sum(empty)>0) warning('one or more empty ID in input')
 
-	annotation<-as.list(rep(noAnnotationSymbol,length(identifier)))
+	if (sum(empty)==length(empty)) {ps<-as.list(rep(NA,length(empty))); noentry<-rep(FALSE,length(empty)); nops<-rep(FALSE,length(empty))}
+	else {
+		annotation<-as.list(rep(noAnnotationSymbol,length(identifier)))
 
-	ind<-which(!empty)
-	for (i in 1:sum(!empty)) {
-		annotation[[ind[i]]]<-annot[which(annot[,identifierCol]==identifier[ind[i]]),annotationCol]
+		ind<-which(!empty)
+		for (i in 1:sum(!empty)) {
+			annotation[[ind[i]]]<-annot[which(annot[,identifierCol]==identifier[ind[i]]),annotationCol]
+		}
+
+		annotationnb<-sapply(annotation,function(x) {length(x)})
+		noentry<-annotationnb==0
+		if (sum(noentry)>0) warning('one or more ID not found in annotation')
+
+		noannotation<-annotation==noAnnotationProvidedSymbol
+		if (sum(noannotation)>0) warning('One or more ID with no annotation provided in annotation')
+
+		annotation[noentry | noannotation]<-noAnnotationSymbol
 	}
-
-	annotationnb<-sapply(annotation,function(x) {length(x)})
-	noentry<-annotationnb==0
-	if (sum(noentry)>0) warning('one or more ID not found in annotation')
-
-	noannotation<-annotation==noAnnotationProvidedSymbol
-	if (sum(noannotation)>0) warning('One or more ID with no annotation provided in annotation')
-
-	annotation[noentry | noannotation]<-noAnnotationSymbol
-
 	if (diagnose) list(annotation,empty,noentry,noannotation)
 	else annotation
-	
+
 }
 
 
