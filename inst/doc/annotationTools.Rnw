@@ -220,7 +220,7 @@ gs_human<-lapply(ps_human,function(x){listToCharacterVector(getGENESYMBOL(x,anno
 gs_human
 @
 
-This suggests that we indeed identified orthologous probe sets correctly (compare with gene symbols of top mouse probe sets). Note that multiple orthologous human probe sets corresponding to a given mouse probe set all report expression of the same gene (which does not need to be always the case, a given mouse gene could be matched to several different orthologs in human). We can identify selected MG-U71Av2 probe sets with no orthologous probe sets on HG-U133A (which will be useful in the remaining) 
+This suggests that we indeed identified orthologous probe sets correctly (compare with gene symbols of top mouse probe sets). Note that multiple orthologous human probe sets corresponding to a given mouse probe set all report expression of the same gene (which does not need to be always the case, a given mouse gene could be matched to several different orthologs in human). We can identify selected MG-U74Av2 probe sets with no orthologous probe sets on HG-U133A (which will be useful in the remaining) 
 
 <<>>=
 existing_ps_human<-!is.na(ps_human)
