@@ -2,7 +2,7 @@ Package: annotationTools
 Type: Package
 Title: Annotate microarrays and find orthologs using flat file databases    
 biocViews: Microarray, Annotation
-Version: 1.4.0
+Version: 1.5.0
 Date: 2007-02-16
 Author: Alexandre Kuhn <alexandre.kuhn@isb-sib.ch>
 Maintainer: Alexandre Kuhn <alexandre.kuhn@isb-sib.ch>
