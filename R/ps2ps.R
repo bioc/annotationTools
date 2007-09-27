@@ -20,7 +20,7 @@ ps2ps<-function(annotation_1,annotation_2,homologene,target_species,probesets=NU
 	gid_2_1<-lapply(gid_2_1,function(x) {unique(x)})
 	gid_2_1<-lapply(gid_2_1,function(x) {if (length(x)>1) na.omit(x) else x})
 
-	mappingTable<-data.frame(ps_1=ps_1,gid_1=listToCharacterVector(gid_1,sep=','),gid_2=listToCharacterVector(gid_2_1,sep=','),ps_2=listToCharacterVector(ps_2_2,sep=','))
+	mappingTable<-data.frame(ps_1=I(ps_1),gid_1=I(listToCharacterVector(gid_1,sep=',')),gid_2=I(listToCharacterVector(gid_2_1,sep=',')),ps_2=I(listToCharacterVector(ps_2_2,sep=',')))
 	mappingTable
 
 }
