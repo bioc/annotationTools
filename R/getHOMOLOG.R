@@ -18,10 +18,12 @@ getHOMOLOG<-function(geneid,targetspecies,homol,cluster=FALSE,diagnose=FALSE,noI
 	targetid<-as.list(rep(noIDsymbol,length(geneid)))
 	indtargetspecies<-homol[,speciesCol]==targetspecies
 	ind<-which(!empty & !noentry)
-	for (i in 1:sum(!empty & !noentry)) {
-		targetid[[ind[i]]]<-homol[which(homol[,clusterCol]==cluster[ind[i]] & indtargetspecies),idCol]
-	}
 
+	if (sum(!empty & !noentry)>0) {
+		for (i in 1:sum(!empty & !noentry)) {
+			targetid[[ind[i]]]<-homol[which(homol[,clusterCol]==cluster[ind[i]] & indtargetspecies),idCol]
+		}
+	}
 	targetidnb<-sapply(targetid,function(x) {length(x)})
 	notargetid<-targetidnb==0
 	if (sum(notargetid)>0) warning('One or more gene ID/cluster with no target provided in homologue table')
