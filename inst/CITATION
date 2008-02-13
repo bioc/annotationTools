@@ -1,14 +1,12 @@
-citHeader("To cite AnnotationTools in publications, please use:")
+citHeader("To cite annotationTools, please use:")
 
-citEntry(entry="Article",
-    author ="Alexandre Kuhn et al",
-    title ="AnnotationTools",
-    journal =      "",
-    volume =       "",
-    year =         "", 
-    pages =        "",
-    url =          "",
-    textVersion = 
-    paste("Kuhn, A. AnnotationTools (manuscript in preparation)",
-         "")
+citEntry(entry="article",
+    author ="Alexandre Kuhn and Ruth Luthi-Carter and Mauro Delorenzi",
+    title ="Cross-species and cross-platform gene expression studies with the Bioconductor-compliant R package annotationTools",
+    journal =      "BMC Bioinformatics",
+    volume =       "9",
+    year =         "2008", 
+    pages =        "26",
+    url =          "http://www.biomedcentral.com/1471-2105/9/26",
+    textVersion = "Kuhn A, Luthi-Carter R, Delorenzi M (2008) Cross-species and cross-platform gene expression studies with the Bioconductor-compliant R package annotationTools. BMC Bioinformatics 9(1):26"
 )
