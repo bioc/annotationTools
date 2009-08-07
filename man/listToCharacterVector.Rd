@@ -18,7 +18,7 @@ The output vector has same length as the input list.
   \item{v}{vector of length 'length(lst)' where the 'i'-th element contains the concatenation of the 'i'-th element of 'lst'.}
 }
 \references{}
-\author{Alexandre Kuhn, \email{alexandre.kuhn@isb-sib.ch}}
+\author{Alexandre Kuhn}
 \examples{
 ##an example list
 lst<-vector('list',3)

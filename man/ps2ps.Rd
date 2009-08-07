@@ -25,12 +25,12 @@ Target species ID are defined by the NCBI Taxonomy database (http://www.ncbi.nlm
   \item{mappingTable}{A data.frame with four columns and as many rows as there are probe sets in the source annotation. Eache row corresponds to a probe set in the source annotation (column1), the corresponding gene IDs (column 2), the orthologous gene IDs in the target species (column 3), and the probe sets in the target annotation correspondin to the orthologous gene IDs (column 4).}
 }
 \references{}
-\author{Alexandre Kuhn, \email{alexandre.kuhn@isb-sib.ch}}
+\author{Alexandre Kuhn}
 \examples{
 \dontrun{
 ##load Affymetrix annotations
-annotMouse<-read.csv('Mouse430_2_annot.csv',colClasses='character')
-annotHuman<-read.csv('HG-U133A_annot.csv',colClasses='character')
+annotMouse<-read.csv('Mouse430_2_annot.csv',colClasses='character',comment.char='#')
+annotHuman<-read.csv('HG-U133A_annot.csv',colClasses='character',comment.char='#')
 
 ##load HomoloGene database
 homologene<-read.delim('homologene.data',header=FALSE)

@@ -27,7 +27,7 @@ If the 'i'-th identifier occur on multiple lines, all corresponding annotation a
   \item{noannotation}{locial vector of length 'length(identifier)'. 'noannotation[i]' is TRUE if 'a[i]==noAnnotationProvidedSymbol' is TRUE.}
 }
 \references{}
-\author{Alexandre Kuhn, \email{alexandre.kuhn@isb-sib.ch}}
+\author{Alexandre Kuhn}
 \note{\code{getANNOTATION} runs faster and is to be used if the identifiers occur only once in the annotation table.
 }
 \seealso{\code{\link{getANNOTATION}}}

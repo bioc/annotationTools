@@ -20,7 +20,7 @@ Function stops if 'sum(l)' does not equal 'lenght(lst)'.
   \item{clst}{list of length 'length(l)' where the 'i'-th element has length 'l[i]' and contains concatenated elements of input list 'lst'.}
 }
 \references{}
-\author{Alexandre Kuhn, \email{alexandre.kuhn@isb-sib.ch}}
+\author{Alexandre Kuhn}
 \examples{
 ##an example list
 lst<-vector('list',3)

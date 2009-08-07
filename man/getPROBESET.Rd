@@ -30,7 +30,7 @@ The default values for 'idCol', 'noPSsymbol', and 'noPSprovidedSymbol' are chose
   \item{noid}{locial vector of length 'length(geneid)'. 'noid[i]' is TRUE if 'ps[i]==noIDprovidedSymbol' is TRUE.}
 }
 \references{}
-\author{Alexandre Kuhn, \email{alexandre.kuhn@isb-sib.ch}}
+\author{Alexandre Kuhn}
 \note{\code{getMULTIANNOTATION} provides a more flexible solution that can be used with arbitrary annotation tables.
 }
 \seealso{\code{\link{getMULTIANNOTATION}}}
@@ -40,7 +40,7 @@ annotationFile<-'HG-U133_Plus_2_annot_part.csv'
 dataDirectory<-system.file('data',package='annotationTools')
 
 ##load annotation file
-annotation<-read.csv(paste(dataDirectory,annotationFile,sep='/'),colClasses='character')
+annotation<-read.csv(paste(dataDirectory,annotationFile,sep='/'),colClasses='character',comment.char='#')
 
 ##genes of interest
 myGenes<-c('DDR1','GUCA1A','HSPA6',NA,'XYZ')

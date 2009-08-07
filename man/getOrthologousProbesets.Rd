@@ -26,7 +26,7 @@ By default, the function returns all orthologous probe sets found. You can force
   \item{ps2\_value}{A list of values associated with the orthologous probe sets. By default, all values are returned. If a function is specified (fct), it is applied to the values before they are returned.}
 }
 \references{}
-\author{Alexandre Kuhn, \email{alexandre.kuhn@isb-sib.ch}}
+\author{Alexandre Kuhn}
 \examples{
 data(orthologs_example)
 

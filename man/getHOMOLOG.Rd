@@ -38,7 +38,7 @@ This can be used to mine orthology tables provided by Affymetrix (e.g. 'Mouse430
   \item{notargetid}{locial vector of length 'length(geneid)'. 'notargetid[i]' is TRUE if 'geneed[i]' is found in the homology/orthology table but no homolog/ortholog is listed for 'targetspecies'.}
 }
 \references{}
-\author{Alexandre Kuhn, \email{alexandre.kuhn@isb-sib.ch}}
+\author{Alexandre Kuhn}
 \examples{
 ##example Homologene file and its location
 homologeneFile<-'homologene_part.data'

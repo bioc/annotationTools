@@ -29,7 +29,7 @@ If multiple annotation is provided for a single identifier (i.e. character strin
   \item{noannotation}{locial vector of length 'length(identifier)'. 'noannotation[i]' is TRUE if 'a[i]==noAnnotationProvidedSymbol' is TRUE.}
 }
 \references{}
-\author{Alexandre Kuhn, \email{alexandre.kuhn@isb-sib.ch}}
+\author{Alexandre Kuhn}
 \note{Use \code{getMULTIANNOTATION} if the identifiers occur on more than one line in the annotation table.
 
 }

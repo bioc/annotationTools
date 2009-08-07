@@ -33,7 +33,7 @@ Note that each GO annotation in Affymetrix annotation files contains 3 attribute
   \item{nogo}{locial vector of length 'length(ps)'. 'nogo[i]' is TRUE if 'go[i]==noIDprovidedSymbol' is TRUE.}
 }
 \references{}
-\author{Alexandre Kuhn, \email{alexandre.kuhn@isb-sib.ch}}
+\author{Alexandre Kuhn}
 \note{\code{getANNOTATION} provides a more flexible solution to be used with arbitrary annotation tables.
 }
 \seealso{\code{\link{getANNOTATION}}}
@@ -43,7 +43,7 @@ annotationFile<-'HG-U133_Plus_2_annot_part.csv'
 dataDirectory<-system.file('data',package='annotationTools')
 
 ##load annotation file
-annotation<-read.csv(paste(dataDirectory,annotationFile,sep='/'),colClasses='character')
+annotation<-read.csv(paste(dataDirectory,annotationFile,sep='/'),colClasses='character',comment.char='#')
 
 ##get gene GO biological process (full information)
 myPS<-c('117_at','1007_s_at','1552288_at',NA,'xyz_at')
