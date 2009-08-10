@@ -3,9 +3,10 @@ Type: Package
 Title: Annotate microarrays and perform cross-species gene expression analyses using flat file databases.   
 biocViews: Microarray, Annotation
 Version: 1.15.0
+
 Date: 2007-09-27
-Author: Alexandre Kuhn <alexandre.kuhn@isb-sib.ch>
-Maintainer: Alexandre Kuhn <alexandre.kuhn@isb-sib.ch>
+Author: Alexandre Kuhn <alexandre.kuhn@mail.nih.gov>
+Maintainer: Alexandre Kuhn <alexandre.kuhn@mail.nih.gov>
 Depends: Biobase
 Description: Functions to annotate microarrays, find orthologs, and integrate heterogeneous gene expression profiles using annotation and other molecular biology information available as flat file database (plain text files).
 License: GPL

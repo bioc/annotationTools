@@ -19,7 +19,7 @@
 
 \maketitle
 
-\Rpackage{annotationTools} is an R package for the annotation of DNA microarray experiments and for the cross-platform and cross-species integration of gene expression profiles using plain text annotation and homology/orthology files. Any flat annotation file can be used once it is loaded into R as a data.frame. Many functions in \Rpackage{annotationTools} are specialized look up tools working on data.frames and their use actually extend to any flat file database. Some functions are tailored to be used with Affymetrix annotation tables (i.\ e.\ HG-U133\_Plus\_2\_annot.csv for array 'HG-U133 Plus 2.0' for instance, available from \url{http://www.affymetrix.com}).
+\Rpackage{annotationTools} is an R package for the annotation of DNA microarray experiments and for the cross-platform and cross-species integration of gene expression profiles using plain text annotation and homology/orthology files \citep{AlexandreKuhn01172008}. Any flat annotation file can be used once it is loaded into R as a data.frame. Many functions in \Rpackage{annotationTools} are specialized look up tools working on data.frames and their use actually extend to any flat file database. Some functions are tailored to be used with Affymetrix annotation tables (i.\ e.\ HG-U133\_Plus\_2\_annot.csv for array 'HG-U133 Plus 2.0' for instance, available from \url{http://www.affymetrix.com}).
 
 In this vignette, we provide a few practical examples on how to annotate microarray probes (Section~\ref{annotation}) and how to retrieve orthologous genes and probe sets (in particular, how to match Affymetrix probe sets accross different species) using various sources of orthology information (namely HomoloGene, see \url{http://www.ncbi.nlm.nih.gov/HomoloGene} and Affymetrix homology/orthology files) (Section~\ref{orthologs}). We also show how to build a mapping table of all the probe sets on a given microarray format and their orthologs on another format (Section~\ref{orthotables}). Finally, we demonstrate the use of such a table to perform cross-species analysis of gene expression regulation (Section~\ref{example}).
 
@@ -28,7 +28,7 @@ In this vignette, we provide a few practical examples on how to annotate microar
 Assume that you want to annotate probe sets on Affymetrix array 'HG-U133 Plus 2.0'. The corresponding annotation file (HG-U133\_Plus\_2\_annot.csv) can be loaded into R with
 
 <<eval=FALSE>>=
-annotation_HGU133Plus2<-read.csv('HG-U133_Plus_2_annot.csv',colClasses='character')
+annotation_HGU133Plus2<-read.csv('HG-U133_Plus_2_annot.csv',colClasses='character',comment.char='#')
 @
 
 For demonstration purpose, a partial Affymetrix annotation file is provided with this package. We can load it with the following commands
@@ -36,7 +36,7 @@ For demonstration purpose, a partial Affymetrix annotation file is provided with
 <<>>=
 annotationFile<-'HG-U133_Plus_2_annot_part.csv'
 dataDirectory<-system.file('data',package='annotationTools')
-annotation_HGU133Plus2<-read.csv(paste(dataDirectory,annotationFile,sep='/'),colClasses='character')
+annotation_HGU133Plus2<-read.csv(paste(dataDirectory,annotationFile,sep='/'),colClasses='character',comment.char='#')
 @
 
 The variable \Robject{myPS} contains two probe set IDs of interest
@@ -146,8 +146,8 @@ orthoTable<-ps2ps(annotation_HGU133Plus2,annotation_Mouse4302,homologene,10090)
 However, we will now present the full code (encapsulated in \Rfunction{ps2ps}) as an example on how to combine various elementary annotation functions. We use HomoloGene to find the mouse orthologs of the human genes. If a human probe set is annotated with several gene IDs, we retrieve the mouse orthologs corresponding to all of these genes. We therefore use the function \Rfunction{compactList} to obtain final lists of orthologous genes and orthologous probe sets of the same length as the original vector of human probe sets. Note that we assume in this example that the full annotation for'HG-U133 Plus 2.0' has been downloaded from Affymetrix and has been saved in the file 'HG-U133\_Plus\_2\_annot.csv'.
 
 <<eval=FALSE>>=
-annotation_HGU133Plus2<-read.csv('HG-U133_Plus_2_annot.csv',colClasses='character')
-annotation_Mouse4302<-read.csv('Mouse430_2_annot.csv',colClasses='character')
+annotation_HGU133Plus2<-read.csv('HG-U133_Plus_2_annot.csv',colClasses='character',comment.char='#')
+annotation_Mouse4302<-read.csv('Mouse430_2_annot.csv',colClasses='character',comment.char='#')
 homologene<-read.delim('homologene.data',header=F)
 target_species<-10090
 
