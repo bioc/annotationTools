@@ -2,8 +2,7 @@ Package: annotationTools
 Type: Package
 Title: Annotate microarrays and perform cross-species gene expression analyses using flat file databases.   
 biocViews: Microarray, Annotation
-Version: 1.15.0
-
+Version: 1.15.1
 Date: 2007-09-27
 Author: Alexandre Kuhn <alexandre.kuhn@mail.nih.gov>
 Maintainer: Alexandre Kuhn <alexandre.kuhn@mail.nih.gov>
