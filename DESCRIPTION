@@ -1,5 +1,5 @@
 Package: annotationTools
-Version: 1.18.0
+Version: 1.19.0
 Date: 2009-08-13
 Title: Annotate microarrays and perform cross-species gene expression analyses using flat file databases.   
 Author: Alexandre Kuhn <kuhnam@mail.nih.gov>
