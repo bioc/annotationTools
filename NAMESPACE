@@ -1,0 +1,6 @@
+importFrom(Biobase, addVigs2WinMenu)
+importFrom(stats, complete.cases, na.omit)
+
+export(compactList, getANNOTATION, getGENEID, getGENEONTOLOGY, getGENESYMBOL,
+       getGENETITLE, getHOMOLOG, getMULTIANNOTATION, getOrthologousProbesets,
+       getPROBESET, listToCharacterVector, ps2ps)
