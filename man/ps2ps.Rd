@@ -39,7 +39,7 @@ homologene<-read.delim('homologene.data',header=FALSE)
 homoSapiens_ID<-9609
 
 ##map all probe sets on mouse array Mouse 430 2.0 to their orthologs on human array HG-U133A
-mappingTable<-ps2ps(annotMouse,annotHuman,homologene,targetSpecies)
+mappingTable<-ps2ps(annotMouse,annotHuman,homologene,homoSapiens_ID)
 
 ##write mapping table to disk
 write.table(mappingTable,file='Mouse4302_HGU133A.txt',sep='\t',col.names=T,row.names=F,quote=FALSE)
