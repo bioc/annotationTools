@@ -1,9 +1,9 @@
 Package: annotationTools
 Version: 1.23.0
-Date: 2009-08-13
+Date: 2011-03-24
 Title: Annotate microarrays and perform cross-species gene expression analyses using flat file databases.   
-Author: Alexandre Kuhn <kuhnam@mail.nih.gov>
-Maintainer: Alexandre Kuhn <kuhnam@mail.nih.gov>
+Author: Alexandre Kuhn <alexandre.m.kuhn@gmail.com>
+Maintainer: Alexandre Kuhn <alexandre.m.kuhn@gmail.com>
 Imports: Biobase, stats
 Description: Functions to annotate microarrays, find orthologs, and integrate heterogeneous gene expression profiles using annotation and other molecular biology information available as flat file database (plain text files).
 biocViews: Microarray, Annotation
