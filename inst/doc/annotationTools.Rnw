@@ -34,9 +34,8 @@ annotation_HGU133Plus2<-read.csv('HG-U133_Plus_2_annot.csv',colClasses='characte
 For demonstration purpose, a partial Affymetrix annotation file is provided with this package. We can load it with the following commands
 
 <<>>=
-annotationFile<-'HG-U133_Plus_2_annot_part.csv'
-dataDirectory<-system.file('data',package='annotationTools')
-annotation_HGU133Plus2<-read.csv(paste(dataDirectory,annotationFile,sep='/'),colClasses='character',comment.char='#')
+annotationFile<-system.file('extdata','HG-U133_Plus_2_annot_part.csv',package='annotationTools')
+annotation_HGU133Plus2<-read.csv(annotationFile,colClasses='character',comment.char='#')
 @
 
 The variable \Robject{myPS} contains two probe set IDs of interest
@@ -91,8 +90,8 @@ Note finally that if an annotation function does not return anything for one of 
 We will now show how to use HomoloGene to retrieve orthologs. The complete flat file version of HomoloGene can be downloaded from \url{http://www.ncbi.nlm.nih.gov/HomoloGene}. A partial version of the database is provided with this package as an example.
 
 <<>>=
-homologeneFile<-'homologene_part.data'
-homologene<-read.delim(paste(dataDirectory,homologeneFile,sep='/'),header=FALSE)
+homologeneFile<-system.file('extdata','homologene_part.data',package='annotationTools')
+homologene<-read.delim(homologeneFile,header=FALSE)
 @
 
 Given two human genes of interest (gene IDs 5982 and 93587 for instance), their mouse orthologs can be looked up in the previously loaded homology file with \Rfunction{getHOMOLOG}, specifying the appropriate species ID for \textit{Mus musculus} (i.\ e.\ 10090, see \url{http://www.ncbi.nlm.nih.gov/Taxonomy})
@@ -110,8 +109,8 @@ We can easily find orthologous probe sets on two different Affymetrix arrays by 
 ps_human<-'1053_at'
 geneID_human<-getGENEID(ps_human,annotation_HGU133Plus2)
 geneID_mouse<-getHOMOLOG(geneID_human,10090,homologene)
-annotationFile<-'Mouse430_2_annot_part.csv'
-annotation_Mouse4302<-read.csv(paste(dataDirectory,annotationFile,sep='/'),colClasses='character')
+annotationFile<-system.file('extdata','Mouse430_2_annot_part.csv',package='annotationTools')
+annotation_Mouse4302<-read.csv(annotationFile,colClasses='character')
 geneID_mouse<-unlist(geneID_mouse)
 ps_mouse<-getPROBESET(geneID_mouse,annotation_Mouse4302)
 ps_mouse
@@ -122,8 +121,8 @@ Note that \Rfunction{getHOMOLOG} can be tuned to other homology/orthology (flat 
 For each array format, Affymetrix provides a table listing homologous/orthologous probe sets on their other arrays (i.\ e.\  HG-U133\_Plus\_2\_ortholog.csv for array 'HG-U133 Plus 2.0' for instance, available from \url{http://www.affymetrix.com}). The \texttt{cluster=TRUE} option can in particular be used to mine these tables for orthologous probe sets on a particular array. We provide a partial Affymetrix homology/orthology file for array 'HG-U133 Plus 2.0' as an example
 
 <<>>=
-affyOrthologFile<-'HG-U133_Plus_2_ortholog_part.csv'
-orthologs_HGU133Plus2<-read.csv(paste(dataDirectory,affyOrthologFile,sep='/'),colClasses='character')
+affyOrthologFile<-system.file('extdata','HG-U133_Plus_2_ortholog_part.csv',package='annotationTools')
+orthologs_HGU133Plus2<-read.csv(affyOrthologFile,colClasses='character')
 @
 
 Given the human probe set '1053\_at' (on array 'HG-U133 Plus 2.0'), we can for instance retrieve the orthologous probe sets proposed by Affymetrix for array 'Mouse 430 2.0' by specifying

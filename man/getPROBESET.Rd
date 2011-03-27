@@ -36,11 +36,10 @@ The default values for 'idCol', 'noPSsymbol', and 'noPSprovidedSymbol' are chose
 \seealso{\code{\link{getMULTIANNOTATION}}}
 \examples{
 ##example Affymetrix annotation file and its location
-annotationFile<-'HG-U133_Plus_2_annot_part.csv'
-dataDirectory<-system.file('data',package='annotationTools')
+annotationFile<-system.file('extdata','HG-U133_Plus_2_annot_part.csv',package='annotationTools')
 
 ##load annotation file
-annotation<-read.csv(paste(dataDirectory,annotationFile,sep='/'),colClasses='character',comment.char='#')
+annotation<-read.csv(annotationFile,colClasses='character',comment.char='#')
 
 ##genes of interest
 myGenes<-c('DDR1','GUCA1A','HSPA6',NA,'XYZ')

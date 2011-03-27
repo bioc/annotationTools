@@ -39,11 +39,10 @@ Note that each GO annotation in Affymetrix annotation files contains 3 attribute
 \seealso{\code{\link{getANNOTATION}}}
 \examples{
 ##example Affymetrix annotation file and its location
-annotationFile<-'HG-U133_Plus_2_annot_part.csv'
-dataDirectory<-system.file('data',package='annotationTools')
+annotationFile<-system.file('extdata','HG-U133_Plus_2_annot_part.csv',package='annotationTools')
 
 ##load annotation file
-annotation<-read.csv(paste(dataDirectory,annotationFile,sep='/'),colClasses='character',comment.char='#')
+annotation<-read.csv(annotationFile,colClasses='character',comment.char='#')
 
 ##get gene GO biological process (full information)
 myPS<-c('117_at','1007_s_at','1552288_at',NA,'xyz_at')

@@ -41,11 +41,10 @@ This can be used to mine orthology tables provided by Affymetrix (e.g. 'Mouse430
 \author{Alexandre Kuhn}
 \examples{
 ##example Homologene file and its location
-homologeneFile<-'homologene_part.data'
-dataDirectory<-system.file('data',package='annotationTools')
+homologeneFile<-system.file('extdata','homologene_part.data',package='annotationTools')
 
 ##load Homologene file
-homologene<-read.delim(paste(dataDirectory,homologeneFile,sep='/'),header=FALSE)
+homologene<-read.delim(homologeneFile,header=FALSE)
 
 ##get mouse (species ID 10090) orthologs of several human (species ID 9606) gene ID (among those: 5982, gene symbol RFC2 and 93587, gene symbol: RG9MTD2)
 myGenes<-c(5982,93587,NA,100)
@@ -59,8 +58,8 @@ myClusters<-c(6885,6886)
 getHOMOLOG(myClusters,10090,homologene,cluster=TRUE)
 
 ##mine Affymetrix (example) ortholog file
-affyOrthologFile<-'HG-U133_Plus_2_ortholog_part.csv'
-affyOrthologs<-read.csv(paste(dataDirectory,affyOrthologFile,sep='/'),colClasses='character')
+affyOrthologFile<-system.file('extdata','HG-U133_Plus_2_ortholog_part.csv',package='annotationTools')
+affyOrthologs<-read.csv(affyOrthologFile,colClasses='character')
 
 ##get Mouse430_2 probe set IDs 'orthologous' to HG-U133_Plus_2 probe set IDs 1053_at and 121_at
 myPS<-c('1053_at','121_at')
