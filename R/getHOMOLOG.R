@@ -1,5 +1,28 @@
-getHOMOLOG<-function(geneid,targetspecies,homol,cluster=FALSE,diagnose=FALSE,noIDsymbol=NA,clusterCol=1,speciesCol=2,idCol=3) {
-	
+getHOMOLOG<-function(geneid,targetspecies,homol,cluster=FALSE,diagnose=FALSE,noIDsymbol=NA,clusterCol=1,speciesCol=2,idCol=3,tableType="homologene") {
+
+	if (tableType!="homologene" & tableType!="gene_group") stop("Input argument tableType should be 'homologene' or 'gene_group'.")
+
+	if (tableType=="gene_group") {
+        	message("Using a 'gene_group' type of file as ortholog table.")
+        	homol<-homol[homol[,3]=="Ortholog",]
+        	cluster=FALSE
+        	clusterCol=2
+        	speciesCol=4
+        	idCol=5
+
+        	duplOthergeneid<-intersect(geneid,homol[duplicated(homol[,idCol]),idCol])
+        	if (length(duplOthergeneid)>0) {
+                	warning(paste(duplOthergeneid,": belongs to more than one ortholog group in 'gene_group'. Only orthologs in the first group will be returned."))
+        	}
+
+        	anchors<-homol[!duplicated(homol[,clusterCol]),c(1,2,3,1,2)]
+        	multipleOrthogroup<-intersect(geneid,intersect(anchors[,idCol],homol[,idCol]))
+        	if (length(multipleOrthogroup)>0) {
+                	warning(paste(multipleOrthogroup,": is used as anchor of an ortholog group and also belongs to another ortholog group. Only orthologs of the group where it is the anchor will be returned."))
+        	}
+        	homol<-rbind(setNames(anchors,names(homol)),homol)
+	}
+
 	empty<-(is.na(geneid) | geneid=='')
 	if (sum(empty)>0) warning('One or more empty gene ID/cluster in input')	
 
