@@ -1,4 +1,4 @@
-ps2ps<-function(annotation_1,annotation_2,homologene,target_species,probesets=NULL) {
+ps2ps<-function(annotation_1,annotation_2,ortholog,target_species,probesets=NULL,tableType="homologene") {
 	
 	if (is.null(probesets)) ps_1<-annotation_1[,1]
 	else ps_1<-probesets
@@ -6,7 +6,7 @@ ps2ps<-function(annotation_1,annotation_2,homologene,target_species,probesets=NU
 	gid_1<-getGENEID(ps_1,annotation_1)
 	length_gid_1<-sapply(gid_1,function(x) {length(x)})
 	cat('Getting orthologous genes...\n')
-	gid_2<-getHOMOLOG(unlist(gid_1),target_species,homologene)
+	gid_2<-getHOMOLOG(unlist(gid_1),target_species,ortholog,tableType=tableType)
 	length_gid_2<-sapply(gid_2,function(x) {length(x)})
 	cat('Getting orthologous probe sets...\n')
 	ps_2<-getPROBESET(unlist(gid_2),annotation_2)
