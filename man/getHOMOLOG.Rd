@@ -42,7 +42,7 @@ This can be used to mine orthology tables provided by Affymetrix (e.g. 'Mouse430
   \item{noentry}{locial vector of length 'length(geneid)'. 'noentry[i]' is TRUE if 'geneid[i]' cannot be found in column 'idCol' (default is column 3) of the homology/orthology table 'homol'.}
   \item{notargetid}{locial vector of length 'length(geneid)'. 'notargetid[i]' is TRUE if 'geneed[i]' is found in the homology/orthology table but no homolog/ortholog is listed for 'targetspecies'.}
 }
-\references{}
+\references{Kuhn et al. Cross-species and cross-platform gene expression studies with the Bioconductor-compliant R package 'annotationTools'. BMC Bioinformatics, 9:26 (2008)}
 \author{Alexandre Kuhn}
 \examples{
 ##example Homologene file and its location

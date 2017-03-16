@@ -29,7 +29,7 @@ The default values for 'idCol', 'noPSsymbol', and 'noPSprovidedSymbol' are chose
   \item{noentry}{locial vector of length 'length(geneid)'. 'noentry[i]' is TRUE if 'geneid[i]' cannot be found in column 'idCol' (default is column 19) of the annotation table.}
   \item{noid}{locial vector of length 'length(geneid)'. 'noid[i]' is TRUE if 'ps[i]==noIDprovidedSymbol' is TRUE.}
 }
-\references{}
+\references{Kuhn et al. Cross-species and cross-platform gene expression studies with the Bioconductor-compliant R package 'annotationTools'. BMC Bioinformatics, 9:26 (2008)}
 \author{Alexandre Kuhn}
 \note{\code{getMULTIANNOTATION} provides a more flexible solution that can be used with arbitrary annotation tables.
 }

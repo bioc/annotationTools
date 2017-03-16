@@ -29,7 +29,7 @@ The default values for 'GScol', 'noGSsymbol', 'noGSprovidedSymbol' and 'sep' are
   \item{noentry}{locial vector of length 'length(ps)'. 'noentry[i]' is TRUE if 'ps[i]' cannot be found in the first column of the annotation table.}
   \item{nogs}{locial vector of length 'length(ps)'. 'nogs[i]' is TRUE if 'symbols[i]==noIDprovidedSymbol' is TRUE.}
 }
-\references{}
+\references{Kuhn et al. Cross-species and cross-platform gene expression studies with the Bioconductor-compliant R package 'annotationTools'. BMC Bioinformatics, 9:26 (2008)}
 \author{Alexandre Kuhn}
 \note{\code{getANNOTATION} provides a more flexible solution to be used with arbitrary annotation tables.
 }

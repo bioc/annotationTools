@@ -17,7 +17,7 @@ The output vector has same length as the input list.
 \value{
   \item{v}{vector of length 'length(lst)' where the 'i'-th element contains the concatenation of the 'i'-th element of 'lst'.}
 }
-\references{}
+\references{Kuhn et al. Cross-species and cross-platform gene expression studies with the Bioconductor-compliant R package 'annotationTools'. BMC Bioinformatics, 9:26 (2008)}
 \author{Alexandre Kuhn}
 \examples{
 ##an example list

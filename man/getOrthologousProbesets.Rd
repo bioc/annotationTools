@@ -25,7 +25,7 @@ By default, the function returns all orthologous probe sets found. You can force
   \item{ps2\_probeSel}{A list of orthologous probe sets given by the mapping table (ps2ps) and present in ps2. By default, all orthologous probe sets are returned. If forceProbesetSelection=TRUE, only the probe sets whose values are matched after application of the user-defined function (fct) are returned.}
   \item{ps2\_value}{A list of values associated with the orthologous probe sets. By default, all values are returned. If a function is specified (fct), it is applied to the values before they are returned.}
 }
-\references{}
+\references{Kuhn et al. Cross-species and cross-platform gene expression studies with the Bioconductor-compliant R package 'annotationTools'. BMC Bioinformatics, 9:26 (2008)}
 \author{Alexandre Kuhn}
 \examples{
 data(orthologs_example)

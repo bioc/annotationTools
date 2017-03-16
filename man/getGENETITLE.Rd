@@ -29,7 +29,7 @@ The default values for 'TITLEcol', 'noTITLEsymbol', 'noTITLEprovidedSymbol' and 
   \item{noentry}{locial vector of length 'length(ps)'. 'noentry[i]' is TRUE if 'ps[i]' cannot be found in the first column of the annotation table.}
   \item{notitle}{locial vector of length 'length(ps)'. 'noid[i]' is TRUE if 'genetitle[i]==noTITLEprovidedSymbol' is TRUE.}
 }
-\references{}
+\references{Kuhn et al. Cross-species and cross-platform gene expression studies with the Bioconductor-compliant R package 'annotationTools'. BMC Bioinformatics, 9:26 (2008)}
 \author{Alexandre Kuhn}
 \note{\code{getANNOTATION} provides a more flexible solution to be used with arbitrary annotation tables.
 }

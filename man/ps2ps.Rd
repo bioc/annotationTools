@@ -25,7 +25,7 @@ Target species ID are defined by the NCBI Taxonomy database (http://www.ncbi.nlm
 \value{
   \item{mappingTable}{A data.frame with four columns and as many rows as there are probe sets in the source annotation. Eache row corresponds to a probe set in the source annotation (column1), the corresponding gene IDs (column 2), the orthologous gene IDs in the target species (column 3), and the probe sets in the target annotation correspondin to the orthologous gene IDs (column 4).}
 }
-\references{}
+\references{Kuhn et al. Cross-species and cross-platform gene expression studies with the Bioconductor-compliant R package 'annotationTools'. BMC Bioinformatics, 9:26 (2008)}
 \author{Alexandre Kuhn}
 \examples{
 \dontrun{

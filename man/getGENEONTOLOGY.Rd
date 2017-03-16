@@ -32,7 +32,7 @@ Note that each GO annotation in Affymetrix annotation files contains 3 attribute
   \item{noentry}{locial vector of length 'length(ps)'. 'noentry[i]' is TRUE if 'ps[i]' cannot be found in the first column of the annotation table.}
   \item{nogo}{locial vector of length 'length(ps)'. 'nogo[i]' is TRUE if 'go[i]==noIDprovidedSymbol' is TRUE.}
 }
-\references{}
+\references{Kuhn et al. Cross-species and cross-platform gene expression studies with the Bioconductor-compliant R package 'annotationTools'. BMC Bioinformatics, 9:26 (2008)}
 \author{Alexandre Kuhn}
 \note{\code{getANNOTATION} provides a more flexible solution to be used with arbitrary annotation tables.
 }

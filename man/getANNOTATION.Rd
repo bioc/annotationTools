@@ -28,7 +28,7 @@ If multiple annotation is provided for a single identifier (i.e. character strin
   \item{noentry}{locial vector of length 'length(identifier)'. 'noentry[i]' is TRUE if 'identifier[i]' cannot be found in 'annot[,identifierCol]'.}
   \item{noannotation}{locial vector of length 'length(identifier)'. 'noannotation[i]' is TRUE if 'a[i]==noAnnotationProvidedSymbol' is TRUE.}
 }
-\references{}
+\references{Kuhn et al. Cross-species and cross-platform gene expression studies with the Bioconductor-compliant R package 'annotationTools'. BMC Bioinformatics, 9:26 (2008)}
 \author{Alexandre Kuhn}
 \note{Use \code{getMULTIANNOTATION} if the identifiers occur on more than one line in the annotation table.
 

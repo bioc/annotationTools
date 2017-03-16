@@ -19,7 +19,7 @@ Function stops if 'sum(l)' does not equal 'lenght(lst)'.
 \value{
   \item{clst}{list of length 'length(l)' where the 'i'-th element has length 'l[i]' and contains concatenated elements of input list 'lst'.}
 }
-\references{}
+\references{Kuhn et al. Cross-species and cross-platform gene expression studies with the Bioconductor-compliant R package 'annotationTools'. BMC Bioinformatics, 9:26 (2008)}
 \author{Alexandre Kuhn}
 \examples{
 ##an example list
