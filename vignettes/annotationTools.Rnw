@@ -130,7 +130,7 @@ gene_groupFile<-system.file('extdata','gene_group_part.data',package='annotation
 gene_group<-read.delim(gene_groupFile,header=TRUE)
 @
 
-We can easily mine 'gene\_group' by setting the \texttt{tableType} argument in \Rfunction{getHOMOLOG} to \texttt{'gene_group'} (instead of the \texttt{'homologene'} default)
+We can easily mine 'gene\_group' by setting the \texttt{tableType} argument in \Rfunction{getHOMOLOG} to \texttt{'gene\_group'} (instead of the \texttt{'homologene'} default)
 
 <<>>=
 getHOMOLOG(myGenes,10090,gene_group,tableType="gene_group")
