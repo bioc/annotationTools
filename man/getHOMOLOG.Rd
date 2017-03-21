@@ -64,7 +64,7 @@ getHOMOLOG(myClusters,10090,homologene,cluster=TRUE)
 
 ##get mouse orthologs of human genes using 'gene_group'
 gene_groupFile<-system.file('extdata','gene_group_part.data',package='annotationTools')
-group_gene<-read.delim(gene_groupFile,header=TRUE)
+gene_group<-read.delim(gene_groupFile,header=TRUE)
 getHOMOLOG(myGenes,10090,gene_group,tableType='gene_group')
 
 ##mine Affymetrix (example) ortholog file
