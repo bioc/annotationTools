@@ -121,19 +121,19 @@ Note that \Rfunction{getHOMOLOG} can be tuned to other homology/orthology (flat 
 
 
 \subsection{Using NCBI's 'Orthologs from Annotation pipeline' database}
-In 2014 NCBI introduced a new, dense source of orthologs for vertebrate species (see \url{https://www.ncbi.nlm.nih.gov/news/03-13-2014-gene-provides-orthologs-regions/}). It is for instance used to provide links to orthologs in NCBI's Gene portal (\url{https://www.ncbi.nlm.nih.gov/gene}). 
+In 2014 NCBI introduced a new, dense source of orthologs for vertebrate species (see \url{https://www.ncbi.nlm.nih.gov/kis/info/how-are-orthologs-calculated/}). It is for instance used to provide links to orthologs in NCBI's Gene portal (\url{https://www.ncbi.nlm.nih.gov/gene}). 
 
-The complete flat file version of this database can be retrieved from \url{ftp.ncbi.nlm.nih.gov/gene/DATA/gene_group.gz}. A partial version is provided with this package
+The complete flat file version of this database can be retrieved from \url{ftp.ncbi.nlm.nih.gov/gene/DATA/gene_orthologs.gz}. A partial version is provided with this package
 
 <<>>=
-gene_groupFile<-system.file('extdata','gene_group_part.data',package='annotationTools')
-gene_group<-read.delim(gene_groupFile,header=TRUE)
+gene_orthologsFile<-system.file('extdata','gene_orthologs_part.data',package='annotationTools')
+gene_orthologs<-read.delim(gene_orthologsFile,header=TRUE)
 @
 
-We can easily mine 'gene\_group' by setting the \texttt{tableType} argument in \Rfunction{getHOMOLOG} to \texttt{'gene\_group'} (instead of the \texttt{'homologene'} default)
+We can easily mine 'gene\_orthologs' by setting the \texttt{tableType} argument in \Rfunction{getHOMOLOG} to \texttt{'gene\_orthologs'} (instead of the \texttt{'homologene'} default)
 
 <<>>=
-getHOMOLOG(myGenes,10090,gene_group,tableType="gene_group")
+getHOMOLOG(myGenes,10090,gene_orthologs,tableType="gene_orthologs")
 @
 
 
@@ -162,7 +162,7 @@ Here, we provide example code to map all probe sets on Affymetrix array 'HG-U133
 orthoTable<-ps2ps(annotation_HGU133Plus2,annotation_Mouse4302,homologene,10090)
 @
 
-However, we will now present the full code (encapsulated in \Rfunction{ps2ps}) as an example on how to combine various elementary annotation functions. We use HomoloGene to find the mouse orthologs of the human genes (alternatively, we could use NCBI's gene\_group file by setting the argument \texttt{tableType} in \Rfunction{ps2ps} to 'gene\_group'). If a human probe set is annotated with several gene IDs, we retrieve the mouse orthologs corresponding to all of these genes. We therefore use the function \Rfunction{compactList} to obtain final lists of orthologous genes and orthologous probe sets of the same length as the original vector of human probe sets. Note that we assume in this example that the full annotation for'HG-U133 Plus 2.0' has been downloaded from Affymetrix and has been saved in the file 'HG-U133\_Plus\_2\_annot.csv'.
+However, we will now present the full code (encapsulated in \Rfunction{ps2ps}) as an example on how to combine various elementary annotation functions. We use HomoloGene to find the mouse orthologs of the human genes (alternatively, we could use NCBI's gene\_orthologs file by setting the argument \texttt{tableType} in \Rfunction{ps2ps} to 'gene\_orthologs'). If a human probe set is annotated with several gene IDs, we retrieve the mouse orthologs corresponding to all of these genes. We therefore use the function \Rfunction{compactList} to obtain final lists of orthologous genes and orthologous probe sets of the same length as the original vector of human probe sets. Note that we assume in this example that the full annotation for'HG-U133 Plus 2.0' has been downloaded from Affymetrix and has been saved in the file 'HG-U133\_Plus\_2\_annot.csv'.
 
 <<eval=FALSE>>=
 annotation_HGU133Plus2<-read.csv('HG-U133_Plus_2_annot.csv',colClasses='character',comment.char='#')

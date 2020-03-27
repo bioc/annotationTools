@@ -17,10 +17,10 @@ getHOMOLOG(geneid, targetspecies, homol, cluster = FALSE, diagnose = FALSE, noID
   \item{clusterCol}{column in homology/orthology table containing homology/orthology cluster IDs.}
   \item{speciesCol}{column in homology/orthology table containing species IDs.}
   \item{idCol}{column in homology/orthology table containing gene IDs.}
-  \item{tableType}{character string specifying the type of homology/orthology table used. Either 'homologene' (default) or 'gene_group'.}
+  \item{tableType}{character string specifying the type of homology/orthology table used. Either 'homologene' (default) or 'gene_orthologs'.}
 }
 \details{
-The homology/orthology table lists gene IDs (from several species) and the homology/orthology cluster they belong to. Homologous and orthologous genes share a common cluster identifier. Given a certain gene ID, a target species, and a homology/orthology table, all gene IDs belonging to the same homology/orthology cluster and to the specified target species are returned. Various homology/orthology databases can be used, in particular NCBI's HomoloGene and their 'Orthologs from Annotation pipeline', referred to as 'gene_group' database (see details below).
+The homology/orthology table lists gene IDs (from several species) and the homology/orthology cluster they belong to. Homologous and orthologous genes share a common cluster identifier. Given a certain gene ID, a target species, and a homology/orthology table, all gene IDs belonging to the same homology/orthology cluster and to the specified target species are returned. Various homology/orthology databases can be used, in particular NCBI's HomoloGene and their 'Orthologs from Annotation pipeline', referred to as 'gene_orthologs' database (see details below).
 If 'targetspecies' is the species 'geneid' belongs to, by definition, homologous genes are returned (if listed). On the contrary, specifying a 'targetspecies' different from the host species 'geneid' belongs to, results in orthologous genes to be returned.
 Note that each gene ID is assumed to be unique and to belong to a single homology/orthology cluster.
 
@@ -29,9 +29,9 @@ If multiple (homologous/orthologous) gene IDs are provided for 'geneid[i]', a ve
 
 Default values for 'clusterCol', 'speciesCol', and 'idCol' are chosen to match the table provided by HomoloGene (homologene.data provided by www.ncbi.nlm.nih.gov/HomoloGene). Homology/orthology tables from other sources might require setting these values appropriately.
 
-Orthologs defined in NCBI's 'Orthologs from Annotation pipeline' database (available at ftp.ncbi.nlm.nih.gov/gene/DATA/gene_group.gz, and hence referred to as 'gene_group') can be mined by setting 'tableType' to 'gene_group' instead of 'homologene' (default). In this case, arguments 'clusterCol', 'speciesCol',and 'idCol' are overridden to fit the data structure used in 'gene_group'. In short, one difference between 'gene_group' compared to HomoloGene is that 'gene_group' does not use ortholog cluster IDs but anchors each ortholog groups using the human gene ID of the ortholog group. If a specific ortholog group does not contain a human gene, a gene ID from another species within the ortholog group may be used as anchor.
+Orthologs defined in NCBI's 'Orthologs from Annotation pipeline' database (available at ftp.ncbi.nlm.nih.gov/gene/DATA/gene_orthologs.gz, and hence referred to as 'gene_orthologs') can be mined by setting 'tableType' to 'gene_orthologs' instead of 'homologene' (default). In this case, arguments 'clusterCol', 'speciesCol',and 'idCol' are overridden to fit the data structure used in 'gene_orthologs'. In short, one difference between 'gene_orthologs' compared to HomoloGene is that 'gene_orthologs' does not use ortholog cluster IDs but anchors each ortholog groups using the human gene ID of the ortholog group. If a specific ortholog group does not contain a human gene, a gene ID from another species within the ortholog group may be used as anchor.
 
-'gene_group' is a rich source of homologs/orthologs between selected vertebrate species and introduced by NCBI in 2014 (https://www.ncbi.nlm.nih.gov/news/03-13-2014-gene-provides-orthologs-regions/). Note that 'gene_group' does not list (and thus cannot be used to search for) homologs (i.e. only 'Ortholog' relationships, as specified in the 3rd column of 'gene_group' are considered).
+'gene_orthologs' is a rich source of homologs/orthologs between selected vertebrate species and introduced by NCBI in 2014 (https://www.ncbi.nlm.nih.gov/kis/info/how-are-orthologs-calculated/). Note that 'gene_orthologs' does not list (and thus cannot be used to search for) homologs (i.e. only 'Ortholog' relationships, as specified in the 3rd column of 'gene_orthologs' are considered).
 
 Finally, if 'cluster' is TRUE, cluster IDs can be provided in 'geneid' (instead of gene IDs) and the function will return all (homologous/orthologous) gene IDs belonging to a given cluster ID and a given 'targetspecies'.
 This can be used to mine orthology tables provided by Affymetrix (e.g. 'Mouse430\_2\_ortholog.csv') for orthologous probe set IDs (see 'examples' below).
@@ -62,10 +62,10 @@ getHOMOLOG(myGenes,10090,homologene,diagnose=TRUE)
 myClusters<-c(6885,6886)
 getHOMOLOG(myClusters,10090,homologene,cluster=TRUE)
 
-##get mouse orthologs of human genes using 'gene_group'
-gene_groupFile<-system.file('extdata','gene_group_part.data',package='annotationTools')
-gene_group<-read.delim(gene_groupFile,header=TRUE)
-getHOMOLOG(myGenes,10090,gene_group,tableType='gene_group')
+##get mouse orthologs of human genes using 'gene_orthologs'
+gene_orthologsFile<-system.file('extdata','gene_orthologs_part.data',package='annotationTools')
+gene_orthologs<-read.delim(gene_orthologsFile,header=TRUE)
+getHOMOLOG(myGenes,10090,gene_orthologs,tableType='gene_orthologs')
 
 ##mine Affymetrix (example) ortholog file
 affyOrthologFile<-system.file('extdata','HG-U133_Plus_2_ortholog_part.csv',package='annotationTools')

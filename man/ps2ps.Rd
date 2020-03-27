@@ -2,7 +2,7 @@
 \alias{ps2ps}
 \title{Find orthologous/homologous probe sets across two different Affymetrix microarray formats using a table of orthologs}
 \description{
-Takes two Affymetrix annotation files, a table of orthologs (either 'gene_group'or the HomoloGene database), a target species ID and returns a mapping table with homologous/orthologous probe sets.
+Takes two Affymetrix annotation files, a table of orthologs (either 'gene_orthologs' or the HomoloGene database), a target species ID and returns a mapping table with homologous/orthologous probe sets.
 }
 \usage{
 ps2ps(annotation_1,annotation_2,ortholog,target_species,probesets=NULL,tableType="homologene")
@@ -10,16 +10,16 @@ ps2ps(annotation_1,annotation_2,ortholog,target_species,probesets=NULL,tableType
 \arguments{
   \item{annotation_1}{A data.frame with Affymetrix annotation for the source microarray format.}
   \item{annotation_2}{A data.frame with Affymetrix annotation for the target microarray format.}
-  \item{ortholog}{A data.frame with the HomoloGene or 'gene_group' database.}
+  \item{ortholog}{A data.frame with the HomoloGene or 'gene_orthologs' database.}
   \item{target_species}{The target species identifier (i.e. the species corresponding to the target microarray).}
   \item{probesets}{A vector of probe set identifiers. If not specified, all probe sets on the source microarray format are mapped (default).}
-  \item{tableType}{Character string (either 'homologene' or 'gene_group') specifying the type of ortholog table used ('homologene' is the default).}
+  \item{tableType}{Character string (either 'homologene' or 'gene_orthologs') specifying the type of ortholog table used ('homologene' is the default).}
 }
 \details{
-A table of orthologous/homologous probe sets is built by looking up gene IDs (corresponding to the probe sets on the source microarray array) in HomoloGene or 'gene_group' to find their orthologs, and identifying probe sets in the target microarray that probe the orthologous gene transcripts.
+A table of orthologous/homologous probe sets is built by looking up gene IDs (corresponding to the probe sets on the source microarray array) in HomoloGene or 'gene_orthologs' to find their orthologs, and identifying probe sets in the target microarray that probe the orthologous gene transcripts.
 
 Affymetrix annotation files can be obtained from Affymetrix (http://www.affymetrix.com).
-A flat file database version can be obtained from HomoloGene (http://www.ncbi.nlm.nih.gov/HomoloGene) or from NCBI's 'Orthologs from Annotation pipeline' database, referred to as 'gene_group' (ftp.ncbi.nlm.nih.gov/gene/DATA/gene_group.gz).
+A flat file database version can be obtained from HomoloGene (http://www.ncbi.nlm.nih.gov/HomoloGene) or from NCBI's 'Orthologs from Annotation pipeline' database, referred to as 'gene_orthologs' (ftp.ncbi.nlm.nih.gov/gene/DATA/gene_orthologs.gz).
 Target species ID are defined by the NCBI Taxonomy database (http://www.ncbi.nlm.nih.gov/Taxonomy)
 }
 \value{
